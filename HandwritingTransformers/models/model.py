@@ -355,6 +355,7 @@ class TRGAN(nn.Module):
         self.KLD = 0 
 
 
+        print(ENGLISH_WORDS_PATH)
         with open(ENGLISH_WORDS_PATH, 'rb') as f:
             self.lex = f.read().splitlines()
         lex=[]

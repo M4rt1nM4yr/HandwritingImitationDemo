@@ -11,7 +11,7 @@ if DATASET == 'IAM':
 if DATASET == 'CVL':
     DATASET_PATHS = 'files/CVL-32.pickle'
     NUM_WRITERS = 283
-ENGLISH_WORDS_PATH = 'files/english_words.txt'
+ENGLISH_WORDS_PATH = '../files/english_words.txt'
 
 ###############################################
 

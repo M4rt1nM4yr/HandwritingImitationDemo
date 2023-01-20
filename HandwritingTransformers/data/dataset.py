@@ -95,7 +95,6 @@ class TextDataset():
             imgs_wids.append(img_width)
 
         imgs_pad = torch.cat(imgs_pad, 0)
-        
 
         item = {'simg': imgs_pad, 'swids':imgs_wids, 'img' : real_img, 'label':real_labels,'img_path':'img_path', 'idx':'indexes', 'wcl':index}
     

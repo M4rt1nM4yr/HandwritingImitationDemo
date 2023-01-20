@@ -1,14 +1,15 @@
 import torch
 import pandas as pd
-from .OCR_network import *
+# from .OCR_network import *
 from torch.nn import CTCLoss, MSELoss, L1Loss
 from torch.nn.utils import clip_grad_norm_
 import random
 import unicodedata
 import sys
 import torchvision.models as models
+
 from models.transformer import *
-from .BigGAN_networks import *
+from models.BigGAN_networks import *
 from params import *
 from .OCR_network import *
 from models.blocks import LinearBlock, Conv2dBlock, ResBlocks, ActFirstResBlock
@@ -356,24 +357,26 @@ class TRGAN(nn.Module):
 
 
         print(ENGLISH_WORDS_PATH)
-        with open(ENGLISH_WORDS_PATH, 'rb') as f:
-            self.lex = f.read().splitlines()
-        lex=[]
-        for word in self.lex:
-            try:
-                word=word.decode("utf-8")
-            except:
-                continue
-            if len(word)<20:
-                lex.append(word)
-        self.lex = lex
+        if os.path.isfile(ENGLISH_WORDS_PATH):
+            with open(ENGLISH_WORDS_PATH, 'rb') as f:
+                self.lex = f.read().splitlines()
+            lex=[]
+            for word in self.lex:
+                try:
+                    word=word.decode("utf-8")
+                except:
+                    continue
+                if len(word)<20:
+                    lex.append(word)
+            self.lex = lex
 
+        f_name = "mytext.txt"
+        if os.path.isfile(f_name):
+            f = open(f_name, 'r')
 
-        f = open('mytext.txt', 'r') 
-
-        self.text = [j.encode() for j in sum([i.split(' ') for i in f.readlines()], [])]#[:NUM_EXAMPLES]
-        self.eval_text_encode, self.eval_len_text = self.netconverter.encode(self.text)
-        self.eval_text_encode = self.eval_text_encode.to(DEVICE).repeat(batch_size, 1, 1)
+            self.text = [j.encode() for j in sum([i.split(' ') for i in f.readlines()], [])]#[:NUM_EXAMPLES]
+            self.eval_text_encode, self.eval_len_text = self.netconverter.encode(self.text)
+            self.eval_text_encode = self.eval_text_encode.to(DEVICE).repeat(batch_size, 1, 1)
 
     def save_images_for_fid_calculation(self, dataloader, epoch, mode = 'train'):
 
